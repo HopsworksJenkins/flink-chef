@@ -7,7 +7,7 @@ group node['hops']['group'] do
 end
 
 user node['hops']['hdfs']['user'] do
-  home "/home/#{node['hops']['hdfs']['user']}"
+  home node['hops']['hdfs']['user-home']
   gid node['hops']['group']
   system true
   shell "/bin/bash"
@@ -32,6 +32,8 @@ end
 user node['flink']['user'] do
   action :create
   gid node['flink']['group']
+  manage_home true
+  home node['flink']['user-home']
   system true
   shell "/bin/false"
   not_if "getent passwd #{node['flink']['user']}"

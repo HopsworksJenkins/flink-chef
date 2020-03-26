@@ -1,8 +1,17 @@
-group node['kagent']['certs_group'] do
+# User certs must belong to flink group to be able to rotate x509 material
+group node['flink']['group'] do
   action :modify
-  members ["#{node['flink']['user']}"]
+  members node['kagent']['certs_user']
   append true
   not_if { node['install']['external_users'].casecmp("true") == 0 }
+end
+
+kagent_hopsify "Generate x.509" do
+  user node['flink']['user']
+  group node['flink']['group']
+  crypto_directory x509_helper.get_crypto_dir(node['flink']['user-home'])
+  action :generate_x509
+  not_if { conda_helpers.is_upgrade || node["kagent"]["test"] == true }
 end
 
 completed_jobs_dir = "#{node['flink']['historyserver']['remote_dir']}"
