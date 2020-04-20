@@ -31,6 +31,10 @@ attribute "flink/group",
           :description => "Groupname to run flink jobmgr/task as",
           :type => 'string'
 
+attribute "flink/user-home",
+          :description => "Home directory of flink user",
+          :type => 'string'
+
 attribute "flink/mode",
           :description => "Run Flink JobManager in one of the following modes: BATCH, STREAMING",
           :type => 'string'
